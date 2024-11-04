@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #0056b3;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        nav .auth {
+            float: right;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .section {
+            background-color: white;
+            margin: 1rem 0;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .job-listing {
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+        }
+        .job-listing:last-child {
+            border-bottom: none;
+        }
+        .footer {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #007BFF;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .filter-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        .filter-group select {
+            width: 100%;
+        }
+        .auth {
+            margin-top: 0.5rem;
+        }
+        .auth button {
+            background-color: #0056b3;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .auth button:hover {
+            background-color: #003d7a;
+        }
+        #map {
+            width: 100%;
+            height: 200px; /* Reduced height for a smaller map */
+            margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Job Search Website</h1>
+    </header>
+    <nav>
+        <a href="#search">Search Jobs</a>
+        <a href="#jobs">Job Listings</a>
+        <a href="#contact">Contact</a>
+        <div class="auth">
+            <button onclick="openAuthModal()">Login/Register</button>
+        </div>
+    </nav>
+    <div class="container">
+        <section class="section" id="search">
+            <h2>Search for Jobs</h2>
+            <form id="searchForm">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="keyword">Keyword:</label>
+                        <input type="text" id="keyword" name="keyword" required>
+                    </div>
+                    <div class="filter-group">
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" name="location" required>
+                        <div id="map"></div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="jobType">Job Type:</label>
+                        <select id="jobType" name="jobType" required>
+                            <option value="">Select Job Type</option>
+                            <option value="full-time">Full-Time</option>
+                            <option value="part-time">Part-Time</option>
+                            <option value="contract">Contract</option>
+                            <option value="freelance">Freelance</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="salaryRange">Salary Range:</label>
+                        <input type="text" id="salaryRange" name="salaryRange" placeholder="e.g. 50000-70000">
+                    </div>
+                    <div class="filter-group">
+                        <button type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section class="section" id="jobs">
+            <h2>Job Listings</h2>
+            <div id="jobListings">
+                <div class="job-listing" onclick="openJobDetailsModal()">
+                    <h3>Software Engineer</h3>
+                    <p>Company: Tech Solutions</p>
+                    <p>Location: New York, NY</p>
+                    <button>View Details</button>
+                </div>
+                <div class="job-listing" onclick="openJobDetailsModal()">
+                    <h3>Marketing Manager</h3>
+                    <p>Company: Creative Agency</p>
+                    <p>Location: San Francisco, CA</p>
+                    <button>View Details</button>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="contact">
+            <h2>Contact Us</h2>
+            <form>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </section>
+        <section class="section" id="feedback">
+            <h2>Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="feedbackName">Name:</label>
+                    <input type="text" id="feedbackName" name="feedbackName" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackEmail">Email:</label>
+                    <input type="email" id="feedbackEmail" name="feedbackEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackMessage">Feedback:</label>
+                    <textarea id="feedbackMessage" name="feedbackMessage" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit Feedback</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="modal" id="jobApplyModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Apply for Job</h2>
+            <form id="applyForm">
+                <div class="form-group">
+                    <label for="applicantName">Name:</label>
+                    <input type="text" id="applicantName" name="applicantName" required>
+                </div>
+                <div class="form-group">
+                    <label for="applicantEmail">Email:</label>
+                    <input type="email" id="applicantEmail" name="applicantEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="coverLetter">Cover Letter:</label>
+                    <textarea id="coverLetter" name="coverLetter" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="jobDetailsModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Job Details</h2>
+            <p><strong>Position:</strong> Software Engineer</p>
+            <p><strong>Company:</strong> Tech Solutions</p>
+            <p><strong>Location:</strong> New York, NY</p>
+            <p><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id dolor ac felis elementum gravida. Ut eget tortor ut velit consequat tempus. Maecenas in felis ac nulla varius tincidunt.</p>
+            <button onclick="openJobApplyModal()">Apply Now</button>
+        </div>
+    </div>
+
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login/Register</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authEmail">Email:</label>
+                    <input type="email" id="authEmail" name="authEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password:</label>
+                    <input type="password" id="authPassword" name="authPassword" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Login</button>
+                </div>
+                <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
+            </form>
+            <form id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Register</button>
+                </div>
+                <p>Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Job Search Website. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Leaflet map initialization
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        var locationInput = document.getElementById('location');
+        var marker;
+
+        map.on('click', function(e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(map);
+            locationInput.value = `${e.latlng.lat}, ${e.latlng.lng}`;
+        });
+
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function openJobDetailsModal() {
+            document.getElementById('jobDetailsModal').style.display = 'block';
+        }
+
+        function openJobApplyModal() {
+            document.getElementById('jobApplyModal').style.display = 'block';
+        }
+
+        function closeModals() {
+            var modals = document.getElementsByClassName('modal');
+            for (var i = 0; i < modals.length; i++) {
+                modals[i].style.display = 'none';
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeModals();
+            }
+        }
+
+        var closeButtons = document.getElementsByClassName('close');
+        for (var i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].onclick = closeModals;
+        }
+
+        function showRegisterForm() {
+            document.getElementById('authForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function showLoginForm() {
+            document.getElementById('authForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

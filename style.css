@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header img.logo {
+    width: 50px;
+    vertical-align: middle;
+}
+header nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+#introduction, #featured-jobs, #announcements {
+    margin: 20px 0;
+}
+#introduction > h2{
+   font-size: 69px;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#featured-jobs > h2{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 50px;
+    background-color: #00ADB5;
+    color: #E3FDFD;
+}
+.featured-job {
+    display: inline-block;
+    width: 30%;
+    padding: 10px;
+    background: #f1eeee;
+    margin: 10px;
+    text-align: left;
+    border-radius: 5%;
+}
+.featured-job img {
+    width: 100%;
+    border-radius: 5%;
+}
+.tool {
+    display: inline-block;
+    width: 45%;
+    padding: 10px;
+    background: #fff;
+    margin: 10px;
+    text-align: left;
+}
+#job-listings .job-listing {
+    background: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: left;
+}

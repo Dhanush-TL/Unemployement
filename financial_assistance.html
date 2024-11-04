@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Support for Unemployed Individuals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #0056b3;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .section {
+            background-color: white;
+            margin: 1rem 0;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .contact-form button {
+            background-color: #007BFF;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .contact-form button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+        .faq-question {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .faq-answer {
+            display: none;
+            padding: 0.5rem;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .carousel {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            margin: 1rem 0;
+        }
+        .carousel img {
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 1rem;
+            cursor: pointer;
+        }
+        .carousel-button.prev {
+            left: 0;
+        }
+        .carousel-button.next {
+            right: 0;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Financial Support for Unemployed Individuals</h1>
+        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </header>
+    <nav>
+        <a href="#eligibility">Eligibility</a>
+        <a href="#support">Types of Support</a>
+        <a href="#process">Application Process</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a href="#" id="modalBtn">Application Guidelines</a>
+    </nav>
+    <div class="container">
+        <section class="section" id="eligibility">
+            <h2>Eligibility Criteria</h2>
+            <p>To qualify for financial support, you must meet the following criteria:</p>
+            <ul>
+                <li>Be a resident of the country</li>
+                <li>Have been unemployed for at least 4 weeks</li>
+                <li>Actively seeking employment</li>
+                <li>Not receiving any other form of unemployment benefits</li>
+            </ul>
+        </section>
+
+        <section class="section" id="support">
+            <h2>Types of Support</h2>
+            <p>We offer various types of financial support to assist you during your period of unemployment:</p>
+            <ul>
+                <li>Unemployment Allowance: A monthly financial aid to cover basic expenses.</li>
+                <li>Training Grants: Funding for skills development and training programs.</li>
+                <li>Job Placement Assistance: Support in finding suitable employment opportunities.</li>
+                <li>Health Insurance: Subsidized health insurance coverage.</li>
+            </ul>
+        </section>
+
+        <section class="section" id="process">
+            <h2>Application Process</h2>
+            <p>Follow these steps to apply for financial support:</p>
+            <ol>
+                <li>Gather all necessary documents, including proof of unemployment and residency.</li>
+                <li>Complete the online application form available on our website.</li>
+                <li>Submit the form along with the required documents.</li>
+                <li>Await confirmation and further instructions via email or phone.</li>
+            </ol>
+        </section>
+
+        <section class="section carousel" id="carousel">
+            <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
+            <img src="https://via.placeholder.com/1200x400" alt="Slide 1">
+            <img src="https://via.placeholder.com/1200x400" alt="Slide 2">
+            <img src="https://via.placeholder.com/1200x400" alt="Slide 3">
+            <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+        </section>
+
+        <section class="section" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">What documents do I need to apply?</div>
+                <div class="faq-answer">You will need proof of unemployment, proof of residency, and identification documents.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How long does the application process take?</div>
+                <div class="faq-answer">The application process typically takes 2-4 weeks for verification and approval.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I apply for multiple types of support?</div>
+                <div class="faq-answer">Yes, you can apply for multiple types of support if you meet the eligibility criteria for each.</div>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <h2>Contact Information</h2>
+            <p>If you have any questions or need assistance, please contact us:</p>
+            <form class="contact-form" id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </div>
+
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Application Guidelines</h2>
+            <p>Before applying, please ensure you have the following documents ready:</p>
+            <ul>
+                <li>Proof of unemployment</li>
+                <li>Proof of residency</li>
+                <li>Identification documents</li>
+            </ul>
+            <p>Make sure all documents are up to date and legible. Incomplete applications will not be processed.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Financial Support Organization</p>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.toggle('dark-mode'));
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Modal Popup
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("modalBtn");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // FAQ Toggle
+        var faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(function(question) {
+            question.addEventListener('click', function() {
+                var answer = this.nextElementSibling;
+                if (answer.style.display === "block") {
+                    answer.style.display = "none";
+                } else {
+                    answer.style.display = "block";
+                }
+            });
+        });
+
+        // Image Carousel
+        let slideIndex = 0;
+        function showSlides() {
+            let slides = document.querySelectorAll('.carousel img');
+            slides.forEach(slide => slide.style.transform = `translateX(-${slideIndex * 100}%)`);
+        }
+        function nextSlide() {
+            let slides = document.querySelectorAll('.carousel img');
+            slideIndex = (slideIndex + 1) % slides.length;
+            showSlides();
+        }
+        function prevSlide() {
+            let slides = document.querySelectorAll('.carousel img');
+            slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+            showSlides();
+        }
+
+        // Form Validation and Notification
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+
+            if (!name || !email || !message) {
+                alert("Please fill out all fields.");
+                event.preventDefault();
+            } else {
+                localStorage.setItem('contactForm', JSON.stringify({ name: name, email: email, message: message }));
+                event.preventDefault();
+                showNotification("Form submitted successfully!");
+            }
+        });
+
+        // Populate form from local storage
+        window.onload = function() {
+            var savedForm = localStorage.getItem('contactForm');
+            if (savedForm) {
+                savedForm = JSON.parse(savedForm);
+                document.getElementById("name").value = savedForm.name;
+                document.getElementById("email").value = savedForm.email;
+                document.getElementById("message").value = savedForm.message;
+            }
+        }
+
+        // Notification Popup
+        function showNotification(message) {
+            let notification = document.createElement('div');
+            notification.innerText = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#007BFF';
+            notification.style.color = 'white';
+            notification.style.padding = '1rem';
+            notification.style.borderRadius = '4px';
+            notification.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

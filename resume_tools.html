@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Resume Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        input, textarea, select, button {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .resume {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: none;
+            position: relative;
+        }
+        .resume h2, .resume h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .resume p {
+            margin: 5px 0;
+        }
+        .resume .contact-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .resume .contact-info img {
+            max-width: 120px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 3px solid #007BFF;
+            transition: border-color 0.3s ease;
+        }
+        .resume .contact-info img:hover {
+            border-color: #0056b3;
+        }
+        .resume .contact-info div {
+            flex: 1;
+        }
+        .resume .social-links a {
+            display: inline-block;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            transition: color 0.3s ease;
+        }
+        .resume .social-links a:hover {
+            color: #0056b3;
+        }
+        .resume .section {
+            margin-bottom: 20px;
+        }
+        .resume .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .resume .section ul li {
+            margin-bottom: 10px;
+        }
+        .resume .certificates img, .resume .certificates iframe {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .resume .certificates iframe {
+            height: 300px;
+        }
+        .theme-default {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .theme-blue {
+            background-color: #e6f2ff;
+            color: #333;
+        }
+        .theme-green {
+            background-color: #e6ffe6;
+            color: #333;
+        }
+        .theme-red {
+            background-color: #ffe6e6;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Build Your Resume</h1>
+        <form id="resumeForm">
+            <label for="photo">Profile Picture:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="linkedin">LinkedIn:</label>
+            <input type="url" id="linkedin" name="linkedin">
+
+            <label for="github">GitHub:</label>
+            <input type="url" id="github" name="github">
+
+            <label for="summary">Summary:</label>
+            <textarea id="summary" name="summary" rows="4" required></textarea>
+
+            <label for="experience">Experience:</label>
+            <textarea id="experience" name="experience" rows="4" required></textarea>
+
+            <label for="education">Education:</label>
+            <textarea id="education" name="education" rows="4" required></textarea>
+
+            <label for="skills">Skills:</label>
+            <textarea id="skills" name="skills" rows="4" required></textarea>
+
+            <label for="certifications">Certifications (PDF/Image):</label>
+            <input type="file" id="certifications" name="certifications" accept="application/pdf,image/*" multiple>
+
+            <label for="theme">Choose a Color Theme:</label>
+            <select id="theme" name="theme">
+                <option value="theme-default">Default</option>
+                <option value="theme-blue">Blue</option>
+                <option value="theme-green">Green</option>
+                <option value="theme-red">Red</option>
+            </select>
+
+            <button type="submit">Build Resume</button>
+        </form>
+
+        <div class="resume theme-default" id="resume">
+            <button class="download-btn" id="downloadBtn">Download PDF</button>
+            <div class="contact-info">
+                <img id="resumePhoto" src="" alt="Profile Picture">
+                <div>
+                    <h2 id="resumeName"></h2>
+                    <p id="resumeEmail"></p>
+                    <p id="resumePhone"></p>
+                    <div class="social-links">
+                        <a id="resumeLinkedIn" href="" target="_blank">LinkedIn</a>
+                        <a id="resumeGitHub" href="" target="_blank">GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h3>Summary</h3>
+                <p id="resumeSummary"></p>
+            </div>
+            <div class="section">
+                <h3>Experience</h3>
+                <p id="resumeExperience"></p>
+            </div>
+            <div class="section">
+                <h3>Education</h3>
+                <p id="resumeEducation"></p>
+            </div>
+            <div class="section">
+                <h3>Skills</h3>
+                <p id="resumeSkills"></p>
+            </div>
+            <div class="section">
+                <h3>Certifications</h3>
+                <div class="certificates" id="resumeCertifications"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        document.getElementById('resumeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Handle Profile Picture
+            const photoInput = document.getElementById('photo');
+            const photo = photoInput.files[0];
+            if (photo) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('resumePhoto').src = e.target.result;
+                }
+                reader.readAsDataURL(photo);
+            }
+
+            // Set Resume Information
+            document.getElementById('resumeName').innerText = document.getElementById('name').value;
+            document.getElementById('resumeEmail').innerText = document.getElementById('email').value;
+            document.getElementById('resumePhone').innerText = document.getElementById('phone').value;
+
+            const linkedin = document.getElementById('linkedin').value;
+            if (linkedin) {
+                document.getElementById('resumeLinkedIn').href = linkedin;
+                document.getElementById('resumeLinkedIn').style.display = 'inline';
+            } else {
+                document.getElementById('resumeLinkedIn').style.display = 'none';
+            }
+
+            const github = document.getElementById('github').value;
+            if (github) {
+                document.getElementById('resumeGitHub').href = github;
+                document.getElementById('resumeGitHub').style.display = 'inline';
+            } else {
+                document.getElementById('resumeGitHub').style.display = 'none';
+            }
+
+            document.getElementById('resumeSummary').innerText = document.getElementById('summary').value;
+            document.getElementById('resumeExperience').innerText = document.getElementById('experience').value;
+            document.getElementById('resumeEducation').innerText = document.getElementById('education').value;
+            document.getElementById('resumeSkills').innerText = document.getElementById('skills').value;
+
+            // Handle Certifications
+            const certificationsContainer = document.getElementById('resumeCertifications');
+            certificationsContainer.innerHTML = '';
+            const certifications = document.getElementById('certifications').files;
+            Array.from(certifications).forEach(cert => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (cert.type === 'application/pdf') {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = e.target.result;
+                        iframe.width = '100%';
+                        iframe.height = '400px';
+                        certificationsContainer.appendChild(iframe);
+                    } else {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        certificationsContainer.appendChild(img);
+                    }
+                }
+                reader.readAsDataURL(cert);
+            });
+
+            // Apply Selected Theme
+            document.getElementById('resume').className = `resume ${document.getElementById('theme').value}`;
+            document.getElementById('resume').style.display = 'block';
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add Title
+            doc.setFontSize(22);
+            doc.text('Resume', 10, 10);
+
+            // Add Resume Content
+            doc.setFontSize(16);
+            doc.text(document.getElementById('resumeName').innerText, 10, 30);
+            doc.text(document.getElementById('resumeEmail').innerText, 10, 40);
+            doc.text(document.getElementById('resumePhone').innerText, 10, 50);
+
+            doc.setFontSize(14);
+            doc.text('Summary', 10, 70);
+            doc.text(document.getElementById('resumeSummary').innerText, 10, 80);
+
+            doc.text('Experience', 10, 100);
+            doc.text(document.getElementById('resumeExperience').innerText, 10, 110);
+
+            doc.text('Education', 10, 130);
+            doc.text(document.getElementById('resumeEducation').innerText, 10, 140);
+
+            doc.text('Skills', 10, 160);
+            doc.text(document.getElementById('resumeSkills').innerText, 10, 170);
+
+            doc.text('Certifications', 10, 190);
+            const certs = document.getElementById('resumeCertifications').childNodes;
+            certs.forEach((cert, index) => {
+                if (cert.nodeName === 'IMG' || cert.nodeName === 'IFRAME') {
+                    // Handle image/PDF, could be added in a more sophisticated manner
+                    doc.addImage(cert.src, 'JPEG', 10, 200 + (index * 50), 180, 50);
+                }
+            });
+
+            doc.save('resume.pdf');
+        });
+    </script>
+</body>
+</html>
